@@ -764,6 +764,7 @@ class CalibrateEK80(CalibrateEK):
         range_meter = self.range_meter.sel(channel=chan_sel)
         if waveform_mode == "BB":
             # use true center frequency for BB pulse
+            # BUG! the below should use freq_center
             wavelength = sound_speed / self.echodata["Sonar/Beam_group1"].frequency_nominal.sel(
                 channel=chan_sel
             )
