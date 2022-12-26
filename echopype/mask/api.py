@@ -237,6 +237,7 @@ def apply_mask(
     # replace var_name with var_name_masked
     output_ds[var_name] = var_name_masked
 
+<<<<<<< HEAD
     # Add or modify variable and global (dataset) provenance attributes
     def _variable_prov_attrs(da, source_mask):
         # Modify core variable attributes
@@ -280,6 +281,9 @@ def apply_mask(
     prov_dict[f"{process_type}_function"] = "mask.apply_mask"
 
     output_ds = output_ds.assign_attrs(prov_dict)
+=======
+    # TODO: add provenance or attributes specifying that a mask was applied here!
+>>>>>>> dev
 
     return output_ds
 
