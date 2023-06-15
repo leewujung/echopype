@@ -26,7 +26,7 @@ Release v0.6.0 include breaking changes to the structure of the core SONAR-netCD
 
 ### Derived, higher-level products
 
-`Echopype` already incorporates [functions to generate higher-level products](process), including calibrated (S<sub>v</sub>, TS), noise and reduced-binned (MVBS) products. Other functionalities are in planning for near-term implementation, including enhancement of processed data products (e.g., [#662](https://github.com/OSOceanAcoustics/echopype/issues/662)), integration of platform location information into S<sub>V</sub>, and seafloor detection and removal, etc.
+`Echopype` already incorporates [functions to generate higher-level products](process), including calibrated (S<sub>v</sub>, S<sub>p</sub>), noise and reduced-binned (MVBS) products. Other functionalities are in planning for near-term implementation, including enhancement of processed data products (e.g., [#662](https://github.com/OSOceanAcoustics/echopype/issues/662)), integration of platform location information into S<sub>V</sub>, and seafloor detection and removal, etc.
 
 
 ## Scalability in computation
