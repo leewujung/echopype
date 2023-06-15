@@ -46,7 +46,7 @@ class CalibrateBase(abc.ABC):
             else:
                 raise ValueError("'cal_params' has to be None or a dict")
 
-        # range_meter is computed in compute_Sv/TS in child class
+        # range_meter is computed in compute_Sv/Sp in child class
         self.range_meter = None
 
     @abc.abstractmethod
@@ -68,7 +68,7 @@ class CalibrateBase(abc.ABC):
         ----------
         cal_type : str
             'Sv' for calculating volume backscattering strength, or
-            'TS' for calculating target strength
+            'Sp' for calculating point backscattering strength
         """
         pass
 
@@ -77,7 +77,7 @@ class CalibrateBase(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def compute_TS(self, **kwargs):
+    def compute_Sp(self, **kwargs):
         pass
 
     def _add_params_to_output(self, ds_out):

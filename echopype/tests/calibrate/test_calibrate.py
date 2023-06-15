@@ -93,7 +93,7 @@ def test_compute_Sv_ek60_matlab(ek60_path):
 
     # Calibrate to get Sv
     ds_Sv = ep.calibrate.compute_Sv(echodata)
-    ds_TS = ep.calibrate.compute_TS(echodata)
+    ds_Sp = ep.calibrate.compute_Sp(echodata)
 
     # Load matlab outputs and test
 
@@ -111,8 +111,8 @@ def test_compute_Sv_ek60_matlab(ek60_path):
     # Check Sv
     check_output(ds_Sv['Sv'], 'Sv')
 
-    # Check TS
-    check_output(ds_TS['TS'], 'Sp')
+    # Check Sp
+    check_output(ds_Sp['Sp'], 'Sp')
 
 
 def test_compute_Sv_ek60_duplicated_freq(ek60_path):
@@ -128,10 +128,10 @@ def test_compute_Sv_ek60_duplicated_freq(ek60_path):
 
     # Calibrate to get Sv
     ds_Sv = ep.calibrate.compute_Sv(echodata)
-    ds_TS = ep.calibrate.compute_TS(echodata)
+    ds_Sp = ep.calibrate.compute_Sp(echodata)
 
     assert isinstance(ds_Sv, xr.Dataset)
-    assert isinstance(ds_TS, xr.Dataset)
+    assert isinstance(ds_Sp, xr.Dataset)
 
 
 def test_compute_Sv_azfp(azfp_path):
@@ -160,7 +160,7 @@ def test_compute_Sv_azfp(azfp_path):
     }
 
     ds_Sv = ep.calibrate.compute_Sv(echodata=echodata, env_params=env_params)
-    ds_TS = ep.calibrate.compute_TS(echodata=echodata, env_params=env_params)
+    ds_Sp = ep.calibrate.compute_Sp(echodata=echodata, env_params=env_params)
 
     # Load matlab outputs and test
     # matlab outputs were saved using
@@ -171,8 +171,9 @@ def test_compute_Sv_azfp(azfp_path):
         ds_base = loadmat(base_path)
         # print(f"ds_base = {ds_base}")
         cal_type_in_ds_cmp = {
+            # matlab output name : echopype name
             'Sv': 'Sv',
-            'TS': 'TS',  # TS here is TS in matlab outputs
+            'TS': 'Sp',  # TS here is TS in matlab outputs
         }
         for fidx in range(4):  # loop through all freq
             assert np.alltrue(
@@ -190,7 +191,7 @@ def test_compute_Sv_azfp(azfp_path):
     check_output(base_path=azfp_matlab_Sv_path, ds_cmp=ds_Sv, cal_type='Sv')
 
     # Check TS
-    check_output(base_path=azfp_matlab_TS_path, ds_cmp=ds_TS, cal_type='TS')
+    check_output(base_path=azfp_matlab_TS_path, ds_cmp=ds_Sp, cal_type='TS')
 
 
 def test_compute_Sv_ek80_CW_complex(ek80_path):
@@ -203,10 +204,10 @@ def test_compute_Sv_ek80_CW_complex(ek80_path):
         echodata, waveform_mode='CW', encode_mode='complex'
     )
     assert isinstance(ds_Sv, xr.Dataset) is True
-    ds_TS = ep.calibrate.compute_TS(
+    ds_Sp = ep.calibrate.compute_Sp(
         echodata, waveform_mode='CW', encode_mode='complex'
     )
-    assert isinstance(ds_TS, xr.Dataset) is True
+    assert isinstance(ds_Sp, xr.Dataset) is True
 
 
 def test_compute_Sv_ek80_BB_complex(ek80_path):
@@ -219,10 +220,10 @@ def test_compute_Sv_ek80_BB_complex(ek80_path):
         echodata, waveform_mode='BB', encode_mode='complex'
     )
     assert isinstance(ds_Sv, xr.Dataset) is True
-    ds_TS = ep.calibrate.compute_TS(
+    ds_Sp = ep.calibrate.compute_Sp(
         echodata, waveform_mode='BB', encode_mode='complex'
     )
-    assert isinstance(ds_TS, xr.Dataset) is True
+    assert isinstance(ds_Sp, xr.Dataset) is True
 
 
 def test_compute_Sv_ek80_CW_power_BB_complex(ek80_path):

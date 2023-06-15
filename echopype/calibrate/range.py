@@ -20,10 +20,10 @@ def compute_range_AZFP(echodata: EchoData, env_params: Dict, cal_type: str) -> x
     env_params : dict
         A dictionary holding environmental parameters needed for computing range
         See echopype.calibrate.env_params.get_env_params_AZFP()
-    cal_type : {"Sv", "TS"}
+    cal_type : {"Sv", "Sp"}
 
         - `"Sv"` for calculating volume backscattering strength
-        - `"TS"` for calculating target strength.
+        - `"Sp"` for calculating target strength.
 
         This parameter needs to be specified for data from the AZFP echosounder
         due to a difference in the range computation given by the manufacturer
@@ -51,7 +51,7 @@ def compute_range_AZFP(echodata: EchoData, env_params: Dict, cal_type: str) -> x
 
     # Check cal_type
     if cal_type is None:
-        raise ValueError('cal_type must be "Sv" or "TS"')
+        raise ValueError('cal_type must be "Sv" or "Sp"')
 
     # Groups to use
     vend = echodata["Vendor_specific"]

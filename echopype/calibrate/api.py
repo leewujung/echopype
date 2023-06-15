@@ -58,22 +58,22 @@ def _compute_cal(
     # Perform calibration
     if cal_type == "Sv":
         cal_ds = cal_obj.compute_Sv()
-    elif cal_type == "TS":
-        cal_ds = cal_obj.compute_TS()
+    elif cal_type == "Sp":
+        cal_ds = cal_obj.compute_Sp()
     else:
-        raise ValueError("cal_type must be Sv or TS")
+        raise ValueError("cal_type must be Sv or Sp")
 
     # Add attributes
     def add_attrs(cal_type, ds):
         """Add attributes to backscattering strength dataset.
-        cal_type: Sv or TS
+        cal_type: Sv or Sp
         """
         ds["range_sample"].attrs = {"long_name": "Along-range sample number, base 0"}
         ds["echo_range"].attrs = {"long_name": "Range distance", "units": "m"}
         ds[cal_type].attrs = {
             "long_name": {
                 "Sv": "Volume backscattering strength (Sv re 1 m-1)",
-                "TS": "Target strength (TS re 1 m^2)",
+                "Sp": "Target strength (Sp re 1 m^2)",
             }[cal_type],
             "units": "dB",
             "actual_range": [
@@ -206,9 +206,9 @@ def compute_Sv(echodata: EchoData, **kwargs) -> xr.Dataset:
     return _compute_cal(cal_type="Sv", echodata=echodata, **kwargs)
 
 
-def compute_TS(echodata: EchoData, **kwargs):
+def compute_Sp(echodata: EchoData, **kwargs):
     """
-    Compute target strength (TS) from raw data.
+    Compute point backscattering strength (Sp) from raw data.
 
     The calibration routine varies depending on the sonar type.
     Currently this operation is supported for the following ``sonar_model``:
@@ -269,7 +269,7 @@ def compute_TS(echodata: EchoData, **kwargs):
     Returns
     -------
     xr.Dataset
-        The calibrated TS dataset, including calibration parameters
+        The calibrated Sp dataset, including calibration parameters
         and environmental variables used in the calibration operations.
 
     Notes
@@ -285,11 +285,13 @@ def compute_TS(echodata: EchoData, **kwargs):
     similar to those recorded by EK60 echosounders.
 
     The current calibration implemented for EK80 broadband complex data
-    uses band-integrated TS with the gain computed at the center frequency
+    uses band-integrated Sp with the gain computed at the center frequency
     of the transmit signal.
 
     Note that in the fisheries acoustics context, it is customary to
-    associate TS to a single scatterer.
+    associate Sp to a single scatterer.
+    Sp is target strength (TS) modulated by the beampattern response
+    depending on where the target is in the beam.
     TS is defined as: TS = 10 * np.log10 (sigma_bs), where sigma_bs
     is the backscattering cross-section.
 
@@ -298,4 +300,4 @@ def compute_TS(echodata: EchoData, **kwargs):
     symbols in fisheries acoustics. ICES J. Mar. Sci. 59: 365-369.
     https://doi.org/10.1006/jmsc.2001.1158
     """
-    return _compute_cal(cal_type="TS", echodata=echodata, **kwargs)
+    return _compute_cal(cal_type="Sp", echodata=echodata, **kwargs)

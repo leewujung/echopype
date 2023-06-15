@@ -48,12 +48,12 @@ class CalibrateEK(CalibrateBase):
         ----------
         cal_type: str
             'Sv' for calculating volume backscattering strength, or
-            'TS' for calculating target strength
+            'Sp' for calculating point backscattering strength,
 
         Returns
         -------
         xr.Dataset
-            The calibrated dataset containing Sv or TS
+            The calibrated dataset containing Sv or Sp
         """
         # Select source of backscatter data
         beam = self.echodata[self.ed_beam_group]
@@ -98,7 +98,7 @@ class CalibrateEK(CalibrateBase):
             )
             out.name = "Sv"
 
-        elif cal_type == "TS":
+        elif cal_type == "Sp":
             # Calc gain
             CSp = (
                 10 * np.log10(beam["transmit_power"])
@@ -108,7 +108,7 @@ class CalibrateEK(CalibrateBase):
 
             # Calibration and echo integration
             out = beam["backscatter_r"] + spreading_loss * 2 + absorption_loss - CSp
-            out.name = "TS"
+            out.name = "Sp"
 
         # Attach calculated range (with units meter) into data set
         out = out.to_dataset()
@@ -185,8 +185,8 @@ class CalibrateEK60(CalibrateEK):
     def compute_Sv(self, **kwargs):
         return self._cal_power_samples(cal_type="Sv")
 
-    def compute_TS(self, **kwargs):
-        return self._cal_power_samples(cal_type="TS")
+    def compute_Sp(self, **kwargs):
+        return self._cal_power_samples(cal_type="Sp")
 
 
 class CalibrateEK80(CalibrateEK):
@@ -469,12 +469,12 @@ class CalibrateEK80(CalibrateEK):
         ----------
         cal_type : str
             'Sv' for calculating volume backscattering strength, or
-            'TS' for calculating target strength
+            'Sp' for calculating point backscattering strength
 
         Returns
         -------
         xr.Dataset
-            The calibrated dataset containing Sv or TS
+            The calibrated dataset containing Sv or Sp
         """
         # Select source of backscatter data
         beam = self.echodata[self.ed_beam_group].sel(channel=self.chan_sel)
@@ -553,7 +553,7 @@ class CalibrateEK80(CalibrateEK):
             out.name = "Sv"
             # out = out.rename_vars({list(out.data_vars.keys())[0]: "Sv"})
 
-        elif cal_type == "TS":
+        elif cal_type == "Sp":
             out = (
                 10 * np.log10(prx)
                 + 2 * spreading_loss
@@ -561,7 +561,7 @@ class CalibrateEK80(CalibrateEK):
                 - 10 * np.log10(wavelength**2 * transmit_power / (16 * np.pi**2))
                 - 2 * gain
             )
-            out.name = "TS"
+            out.name = "Sp"
 
         # Attach calculated range (with units meter) into data set
         out = out.to_dataset().merge(range_meter)
@@ -585,18 +585,18 @@ class CalibrateEK80(CalibrateEK):
 
     def _compute_cal(self, cal_type) -> xr.Dataset:
         """
-        Private method to compute Sv or TS from EK80 data, called by compute_Sv or compute_TS.
+        Private method to compute Sv or Sp from EK80 data, called by compute_Sv or compute_Sp.
 
         Parameters
         ----------
         cal_type : str
             'Sv' for calculating volume backscattering strength, or
-            'TS' for calculating target strength
+            'Sp' for calculating point backscattering strength
 
         Returns
         -------
         xr.Dataset
-            An xarray Dataset containing either Sv or TS.
+            An xarray Dataset containing either Sv or Sp.
         """
         # Set flag_complex: True-complex cal, False-power cal
         flag_complex = (
@@ -623,13 +623,13 @@ class CalibrateEK80(CalibrateEK):
         """
         return self._compute_cal(cal_type="Sv")
 
-    def compute_TS(self):
-        """Compute target strength (TS).
+    def compute_Sp(self):
+        """Compute point backscattering strength (Sp).
 
         Returns
         -------
-        TS : xr.DataSet
-            A DataSet containing target strength (``TS``)
+        Sp : xr.DataSet
+            A DataSet containing target strength (``Sp``)
             and the corresponding range (``echo_range``) in units meter.
         """
-        return self._compute_cal(cal_type="TS")
+        return self._compute_cal(cal_type="Sp")

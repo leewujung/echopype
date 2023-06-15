@@ -29,18 +29,20 @@ class CalibrateAZFP(CalibrateBase):
         )
 
         # self.range_meter computed under self._cal_power_samples()
-        # because the implementation is different for Sv and TS
+        # because the implementation is different for Sv and Sp
 
     def compute_echo_range(self, cal_type):
         """Calculate range (``echo_range``) in meter using AZFP formula.
 
         Note the range calculation differs for Sv and TS per AZFP matlab code.
+        Here we use Sp instead of TS because the target position in the beam
+        is unknown for single-beam observations.
 
         Parameters
         ----------
         cal_type : str
             'Sv' for calculating volume backscattering strength, or
-            'TS' for calculating target strength
+            'Sp' for calculating target strength
         """
         self.range_meter = compute_range_AZFP(
             echodata=self.echodata, env_params=self.env_params, cal_type=cal_type
@@ -92,10 +94,10 @@ class CalibrateAZFP(CalibrateBase):
             )  # see p.90-91 for this correction to Sv
             out.name = "Sv"
 
-        elif cal_type == "TS":
+        elif cal_type == "Sp":
             # eq.(10)
             out = EL - SL + 2 * spreading_loss + absorption_loss
-            out.name = "TS"
+            out.name = "Sp"
         else:
             raise ValueError("cal_type not recognized!")
 
@@ -114,5 +116,5 @@ class CalibrateAZFP(CalibrateBase):
     def compute_Sv(self, **kwargs):
         return self._cal_power_samples(cal_type="Sv")
 
-    def compute_TS(self, **kwargs):
-        return self._cal_power_samples(cal_type="TS")
+    def compute_Sp(self, **kwargs):
+        return self._cal_power_samples(cal_type="Sp")
