@@ -491,6 +491,21 @@ def test_nan_range_entries(range_check_files):
                 ),
         ),
         (
+                "external-trajectory-time3-time4",
+                "EK80",
+                # variable_mappings dictionary as {Platform_var_name: external-data-var-name}
+                {"pitch": "PITCH", "roll": "ROLL", "longitude": "longitude", "latitude": "latitude"},
+                "EK80",
+                (
+                        "saildrone",
+                        "SD2019_WCS_v05-Phase0-D20190617-T125959-0.raw",
+                ),
+                (
+                        "saildrone",
+                        "saildrone-gen_5-fisheries-acoustics-code-sprint-sd1039-20190617T130000-20190618T125959-1_hz-v1.1595357449818.nc",  #noqa
+                ),
+        ),
+        (
                 "fixed-location",
                 "EK60",
                 # variable_mappings dictionary as {Platform_var_name: external-data-var-name}
@@ -502,6 +517,11 @@ def test_nan_range_entries(range_check_files):
                 ),
                 (-100.0, -50.0),
         ),
+    ],
+    ids=[
+        "saildrone_single_time_dims",
+        "saildrone_two_time_dims",
+        "fixed_loc",
     ],
 )
 def test_update_platform(
@@ -521,7 +541,7 @@ def test_update_platform(
         assert np.isnan(ed["Platform"][variable].values).all()
 
     # Prepare the external data
-    if ext_type == "external-trajectory":
+    if ext_type.startswith("external-trajectory"):
         extra_platform_data_file_name = platform_data[1]
         extra_platform_data = xr.open_dataset(
             test_path[path_model] / platform_data[0] / extra_platform_data_file_name
@@ -537,6 +557,20 @@ def test_update_platform(
                 "time": (["time"], np.array([ed['Sonar/Beam_group1'].ping_time.values.min()]))
             },
         )
+
+    if ext_type == "external-trajectory-time3-time4":
+        # change from CF trajectory dataset to aligned with time
+        extra_platform_data = extra_platform_data.sel(
+            {"trajectory": extra_platform_data["trajectory"][0]}
+        )
+        extra_platform_data = extra_platform_data.drop_vars("trajectory")
+        obs_dim = list(extra_platform_data["time"].dims)[0]
+        extra_platform_data = extra_platform_data.swap_dims({obs_dim: "time"})
+        # artificially change ROLL and PITCH to be aligned with time2
+        extra_platform_data = extra_platform_data.assign_coords({"time2": extra_platform_data["time"]})
+        extra_platform_data["ROLL"] = extra_platform_data["ROLL"].swap_dims({"time": "time2"})
+        extra_platform_data["PITCH"] = extra_platform_data["PITCH"].swap_dims({"time": "time2"})
+        extra_platform_data.attrs.pop("featureType")  # ensure type if changed
 
     # Run update_platform
     ed.update_platform(
@@ -573,3 +607,14 @@ def test_update_platform(
         )
         <= 1
     )
+
+    if ext_type == "external-trajectory-time3-time4":
+        # time4 should exist in the updated Platform group
+        # latitude and longitude should be aligned with time3
+        # roll and pitch should be aligned with time4
+        assert "time3" in ed["Platform"]
+        assert "time4" in ed["Platform"]
+        for p in ["pitch", "roll"]:
+            assert ed["Platform"][p].dims[0] == "time3"
+        for p in ["latitude", "longitude"]:
+            assert ed["Platform"][p].dims[0] == "time4"
