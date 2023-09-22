@@ -256,11 +256,15 @@ class ParseEK(ParseBase):
             ):
                 continue
 
+            if not new_datagram["type"].startswith("XML"):
+                print(new_datagram["type"])
+
             # XML datagrams store environment or instrument parameters for EK80
             if new_datagram["type"].startswith("XML"):
                 if new_datagram["subtype"] == "environment" and (
                     "ENV" in self.data_type or "ALL" in self.data_type
                 ):
+                    print("XML0-environment")
                     self.environment = new_datagram["environment"]
                     self.environment["xml"] = new_datagram["xml"]
                     self.environment["timestamp"] = new_datagram["timestamp"]
@@ -268,6 +272,7 @@ class ParseEK(ParseBase):
                     if "ENV" in self.data_type:
                         break
                 elif new_datagram["subtype"] == "parameter" and ("ALL" in self.data_type):
+                    print("XML0-parameter")
                     current_parameters = new_datagram["parameter"]
 
             # RAW0 datagrams store raw acoustic data for a channel for EK60

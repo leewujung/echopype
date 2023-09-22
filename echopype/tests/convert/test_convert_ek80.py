@@ -6,6 +6,7 @@ from echopype import open_raw
 
 from echopype.testing import TEST_DATA_FOLDER
 from echopype.convert.set_groups_ek80 import WIDE_BAND_TRANS, PULSE_COMPRESS, FILTER_IMAG, FILTER_REAL, DECIMATION
+from echopype.convert.misc import split_raw
 
 
 @pytest.fixture
@@ -370,6 +371,10 @@ def test_convert_ek80_freq_subset(ek80_path):
         ek80_path.joinpath('2019118 group2survey-D20191214-T081342.raw')
     )
     echodata = open_raw(raw_file=ek80_raw_path_freq_subset, sonar_model='EK80')
+
+    split_raw(source_file=ek80_raw_path_freq_subset, storage_options={})
+    # split_raw(source_file="my_file.raw", storage_options={})
+
 
     # Check if converted output has only 2 frequency channels
     assert echodata["Sonar/Beam_group1"].channel.size == 2
