@@ -497,6 +497,10 @@ class ParseEK(ParseBase):
                 new_datagram["timestamp"].replace(tzinfo=None), "[ns]"
             )
 
+            # if "channel_id" in new_datagram:
+            #     if "70" in new_datagram["channel_id"]:
+            #         print(repr(new_datagram["channel_id"]), new_datagram["type"])
+
             # Remove \x00t from channel_id
             if "channel_id" in new_datagram:
                 # Use `repr` to see the full string content
@@ -504,6 +508,8 @@ class ParseEK(ParseBase):
                 # trailing \x00t only seen once in the file below but keeping it here just in case
                 # echopype/test_data/ek80_bb_complex_multiplex/CW_FM_power_complex_repeating.raw
                 new_datagram["channel_id"] = new_datagram["channel_id"].replace("\x00t", "")
+                # trailing \x00K only seen in NOR1 WBAT mooring data
+                new_datagram["channel_id"] = new_datagram["channel_id"].replace("\x00K-Split", "")
 
             # # For debugging EC150 datagrams
             # if new_datagram["type"].startswith("XML") and "subtype" in new_datagram:
