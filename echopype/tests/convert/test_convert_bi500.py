@@ -64,7 +64,7 @@ def test_bi500_beam_group_dimensions(bi500_output):
     assert beam["transceiver_channel_number"].item() == 1
     # TODO: Add beam_type once it can be populated from the BI500 data
     assert "beam_type" not in beam
-    assert beam["channel"].item() == "BI500-F11990-T01"
+    assert beam["channel"].item() == "F11990-T01"
 
     ping_time_vars = [
         "echogram_type",
@@ -235,7 +235,7 @@ def test_bi500_calibrated_echograms(bi500_output):
     assert sv.attrs["units"] == "dB"
     assert sv_bottom.attrs["units"] == "dB"
 
-    assert ds_cal.channel.values[0] == "BI500-F11990-T01"
+    assert ds_cal.channel.values[0] == "F11990-T01"
     assert ds_cal["frequency_nominal"].shape == (1,)
 
     assert ds_cal.attrs["source_sonar_model"] == "BI500"
