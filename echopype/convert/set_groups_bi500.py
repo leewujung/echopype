@@ -219,7 +219,7 @@ class SetGroupsBI500(SetGroupsBase):
         parameters = self.parser_obj.parameters
         frequency = int(parameters["frequency"][0])
         transceiver = int(parameters["transceiver"][0])
-        return f"BI500-F{frequency}-T{transceiver:02d}"
+        return f"F{frequency}-T{transceiver:02d}"
 
     def set_env(self) -> xr.Dataset:
         """Set Environment data for all BI500 channels."""
