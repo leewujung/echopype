@@ -3,7 +3,7 @@
 This module contain all the various tests for echopype conversion
 from a raw data to standard compliant zarr or netcdf file(s).
 
-**Note that in order to run this test, minio server is required for s3
+**Note that in order to run this test, an S3-compatible server is required for s3
 output tests.**
 """
 
