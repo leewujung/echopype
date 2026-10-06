@@ -68,9 +68,9 @@ def _create_path_str(test_folder, paths):
         "/",
         "/tmp.zarr",
         "/tmp.nc",
-        "s3://ooi-raw-data/dump/",
-        "s3://ooi-raw-data/dump/tmp.zarr",
-        "s3://ooi-raw-data/dump/tmp.nc",
+        "s3://data-output/dump/",
+        "s3://data-output/dump/tmp.zarr",
+        "s3://data-output/dump/tmp.nc",
     ],
     ids=[
         "None",

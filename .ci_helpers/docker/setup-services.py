@@ -105,7 +105,7 @@ def load_s3(*args, **kwargs) -> None:
             time.sleep(1)
 
     test_data = "data"
-    for bucket_name in (test_data, "echo-test-data", "ooi-raw-data"):
+    for bucket_name in (test_data, "data-output"):
         if not fs.exists(bucket_name):
             fs.mkdir(bucket_name)
 

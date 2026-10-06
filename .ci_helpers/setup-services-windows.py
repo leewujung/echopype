@@ -132,7 +132,7 @@ def seed_s3_from_pooch() -> None:
         secret=S3_PASS,
     )
 
-    for base in ("data", "echo-test-data", "ooi-raw-data"):
+    for base in ("data", "data-output"):
         if not fs.exists(base):
             fs.mkdir(base)
 

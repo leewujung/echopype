@@ -6,7 +6,7 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: s3admin
       AWS_SECRET_ACCESS_KEY: s3admin
-      S3_BUCKET: data,echo-test-data,ooi-raw-data
+      S3_BUCKET: data,data-output
     ports:
       - 9000:8333
     networks:
