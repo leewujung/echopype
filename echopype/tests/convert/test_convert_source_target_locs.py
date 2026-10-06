@@ -281,9 +281,9 @@ def test_convert_ek(
     ek_input_params,
     export_engine,
     output_save_path,
-    minio_bucket,
+    s3_storage_options,
 ):
-    common_storage_options = minio_bucket
+    common_storage_options = s3_storage_options
     output_storage_options = {}
     input_paths, sonar_model = ek_input_params
     
@@ -377,13 +377,13 @@ def test_convert_azfp(
     azfp_xml_paths,
     export_engine,
     output_save_path,
-    minio_bucket,
+    s3_storage_options,
     model="AZFP",
 ):
-    common_storage_options = minio_bucket
+    common_storage_options = s3_storage_options
     output_storage_options = {}
 
-    # S3 uses MinIO creds; HTTP must stream to avoid ranged reads on Windows CI
+    # S3 uses local test credentials; HTTP must stream to avoid ranged reads on Windows CI
     if azfp_input_paths.startswith("s3://"):
         input_storage_options = common_storage_options
     elif azfp_input_paths.startswith(("http://", "https://")):

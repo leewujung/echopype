@@ -41,8 +41,8 @@ HTTP_DATA = HTTP_ROOT / "data"
 
 # Use localhost everywhere to match tests.
 S3_ENDPOINT = "http://localhost:9000/"
-S3_USER = "minioadmin"
-S3_PASS = "minioadmin"
+S3_USER = "s3admin"
+S3_PASS = "s3admin"
 
 
 def get_pooch_cache() -> pathlib.Path:

@@ -78,7 +78,7 @@ def test_sanitize_file_path(file_path, should_fail, file_type):
     ],
 )
 @pytest.mark.integration
-def test_validate_output_path(save_path, engine, minio_bucket):
+def test_validate_output_path(save_path, engine, s3_storage_options):
     output_root_path = os.path.join('.', 'echopype', 'test_data', 'dump')
     source_file = 'test.raw'
     if engine == 'netcdf4':
@@ -98,8 +98,8 @@ def test_validate_output_path(save_path, engine, minio_bucket):
     if save_path and save_path.startswith("s3://"):
         output_storage_options = dict(
             client_kwargs=dict(endpoint_url="http://localhost:9000/"),
-            key="minioadmin",
-            secret="minioadmin",
+            key="s3admin",
+            secret="s3admin",
         )
 
     try:

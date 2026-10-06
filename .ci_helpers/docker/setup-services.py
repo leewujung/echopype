@@ -90,8 +90,8 @@ def load_s3(*args, **kwargs) -> None:
     pooch_path = get_pooch_data_path()
     common_storage_options = dict(
         client_kwargs=dict(endpoint_url="http://localhost:9000/"),
-        key="minioadmin",
-        secret="minioadmin",
+        key="s3admin",
+        secret="s3admin",
     )
     fs = fsspec.filesystem("s3", **common_storage_options)
     # Probe the signed S3 API, not just the TCP port, before uploading data.

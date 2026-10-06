@@ -93,7 +93,7 @@ tests also require local HTTP and S3-compatible services. To run the full test
 suite, start these services first. We use SeaweedFS 4.48 for S3 on
 `http://localhost:9000/` and an HTTP server on port 8080. Linux/macOS use
 the upstream SeaweedFS Docker image; Windows downloads the matching native
-release. The `minioadmin` access key and secret are retained for existing tests.
+release. The local test access key and secret are both `s3admin`.
 
 On Linux/macOS:
 

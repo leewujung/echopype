@@ -124,8 +124,8 @@ jobs:
       seaweedfs:
         image: chrislusf/seaweedfs:4.48
         env:
-          AWS_ACCESS_KEY_ID: minioadmin
-          AWS_SECRET_ACCESS_KEY: minioadmin
+          AWS_ACCESS_KEY_ID: s3admin
+          AWS_SECRET_ACCESS_KEY: s3admin
           S3_BUCKET: data,echo-test-data,ooi-raw-data
         ports:
           - 9000:8333
