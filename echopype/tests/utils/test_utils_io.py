@@ -96,11 +96,7 @@ def test_validate_output_path(save_path, engine, s3_storage_options):
 
     output_storage_options = {}
     if save_path and save_path.startswith("s3://"):
-        output_storage_options = dict(
-            client_kwargs=dict(endpoint_url="http://localhost:9000/"),
-            key="s3admin",
-            secret="s3admin",
-        )
+        output_storage_options = s3_storage_options
 
     try:
         output_path = validate_output_path(

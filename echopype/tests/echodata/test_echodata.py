@@ -337,14 +337,9 @@ class TestEchoData:
 @pytest.mark.integration
 def test_open_converted(ek60_converted_zarr, s3_storage_options):  # noqa
     def _check_path(zarr_path):
-        storage_options = {}
         if zarr_path.startswith("s3://"):
-            storage_options = dict(
-                client_kwargs=dict(endpoint_url="http://localhost:9000/"),
-                key="s3admin",
-                secret="s3admin",
-            )
-        return storage_options
+            return s3_storage_options
+        return {}
 
     storage_options = {}
     if not isinstance(ek60_converted_zarr, fsspec.FSMap):
